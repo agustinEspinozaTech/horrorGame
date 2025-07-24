@@ -29,7 +29,7 @@ public class GameInputManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // Detiene el juego en el editor
 #else
-        Application.Quit(); // Cierra el ejecutable
+        UnityEngine.Application.Quit(); // Cierra el ejecutable
 #endif
     }
 
