@@ -12,7 +12,7 @@ public class EnemyAI : MonoBehaviour
     public AudioController audioController;
 
     public float delayBeforeChase = 4f;
-    public float chaseDuration = 8f;         //  Solo perseguirá por este tiempo
+    public float chaseDuration = 10f;         //  Solo perseguirá por este tiempo
     public float gameOverDistance = 1.5f;
     public GameObject gameOverUI;
 
