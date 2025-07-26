@@ -160,7 +160,7 @@ MonoBehaviour:
   - "Lo que no sab\xEDas..."
   - "es que no fuiste el \xFAnico en quedar atrapado en esa noche.\n\nY lo que sea
     que dejaste atr\xE1s, no quiere ser olvidado."
-  typingSpeed: 0.08
+  typingSpeed: 0.05
   menuPanel: {fileID: 928926831}
 --- !u!4 &10558936
 Transform:

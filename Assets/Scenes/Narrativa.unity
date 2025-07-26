@@ -792,7 +792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1517906731}
-  - component: {fileID: 1517906730}
+  - component: {fileID: 1517906732}
   m_Layer: 0
   m_Name: IntroTextController
   m_TagString: Untagged
@@ -800,32 +800,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1517906730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1517906729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a70c8eca60bb7eb4a8152275d9c14771, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textComponent: {fileID: 613733160}
-  lines:
-  - "Han pasado ocho a\xF1os desde aquella noche.\n\nNadie supo lo que hiciste realmente\u2026
-    o eso cre\xEDas."
-  - "Esta casa, tu casa, guarda a\xFAn las huellas de tus actos.\n\nFotograf\xEDas
-    ocultas, diarios, s\xEDmbolos\u2026\n\nTodo permanece, esperando ser descubierto."
-  - "Si alguien encuentra esas pruebas, todo terminar\xE1 para vos.\n\nTu libertad,
-    tu vida tranquila, tu m\xE1scara."
-  - "Tu objetivo es claro:\n\nRecorrer cada rinc\xF3n y destruir toda evidencia antes
-    de que alguien m\xE1s entre."
-  - "Pero cuidado\u2026"
-  - "Algo tambi\xE9n volvi\xF3 con vos.\n\n"
-  typingSpeed: 0.04
-  menuPanel: {fileID: 0}
 --- !u!4 &1517906731
 Transform:
   m_ObjectHideFlags: 0
@@ -840,4 +814,76 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1517906732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517906729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 268cbe60164bfa8438d10efceea41901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 613733160}
+  lines:
+  - "Han pasado ocho a\xF1os desde aquella noche.\n\nNadie supo lo que hiciste realmente\u2026
+    o eso cre\xEDas."
+  - "Esta casa, tu casa, guarda a\xFAn las huellas de tus actos.\n\nFotograf\xEDas
+    ocultas, diarios, s\xEDmbolos\u2026\n\nTodo permanece, esperando ser descubierto."
+  - "Si alguien encuentra esas pruebas, todo terminar\xE1 para vos.\n\nTu libertad,
+    tu vida tranquila, tu m\xE1scara."
+  - "Tu objetivo es claro:\n\nRecorrer cada rinc\xF3n y destruir toda evidencia antes
+    de que alguien m\xE1s entre."
+  - "Pero cuidado\u2026"
+  - "Algo tambi\xE9n volvi\xF3 con vos.\n\n"
+  typingSpeed: 0.05
+  changeSceneScript: {fileID: 1798143340}
+--- !u!1 &1798143339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1798143341}
+  - component: {fileID: 1798143340}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1798143340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798143339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1a3883dded1b5459eb1936a105d828, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nombreEscena: DestruirEvidencia
+  delayAntesDeCambiar: 1.5
+--- !u!4 &1798143341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798143339}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 505.11218, y: 3.5340104, z: 544.42084}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
