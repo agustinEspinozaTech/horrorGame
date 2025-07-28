@@ -19227,6 +19227,7 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  Gravity: -15
 --- !u!114 &1745147904
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -103,7 +103,9 @@ namespace StarterAssets
             if (_mainCamera == null)
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
-
+        private float _verticalVelocity;
+        private float _terminalVelocity = 53.0f;
+        public float Gravity = -15.0f;
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
@@ -220,7 +222,21 @@ namespace StarterAssets
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime));
+            _verticalVelocity += Gravity * Time.deltaTime;
+
+            if (Grounded && _verticalVelocity < 0)
+            {
+                _verticalVelocity = -2f; // leve empuje constante hacia abajo
+            }
+
+            if (_verticalVelocity < -_terminalVelocity)
+            {
+                _verticalVelocity = -_terminalVelocity;
+            }
+
+            // Movimiento final incluyendo caída
+            Vector3 move = targetDirection.normalized * _speed + Vector3.up * _verticalVelocity;
+            _controller.Move(move * Time.deltaTime);
 
             if (_hasAnimator)
             {
