@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class TypewriterEffect : MonoBehaviour
 {
@@ -9,14 +9,45 @@ public class TypewriterEffect : MonoBehaviour
     [TextArea(3, 10)]
     public string[] lines;
     public float typingSpeed = 0.08f;
-    public GameObject menuPanel; 
+    public GameObject menuPanel;
+    public Button skipButton;
 
     private int index = 0;
+    private Coroutine typingCoroutine;
+
+    private CanvasGroup skipButtonGroup;
 
     void Start()
     {
         textComponent.text = "";
-        StartCoroutine(TypeLine());
+
+        skipButtonGroup = skipButton.GetComponent<CanvasGroup>();
+        if (skipButtonGroup == null)
+        {
+            skipButtonGroup = skipButton.gameObject.AddComponent<CanvasGroup>();
+        }
+
+        skipButtonGroup.alpha = 0;
+        skipButton.gameObject.SetActive(true);
+        skipButton.onClick.AddListener(SkipIntro);
+
+        StartCoroutine(FadeInSkipButton());
+        typingCoroutine = StartCoroutine(TypeLine());
+    }
+
+    IEnumerator FadeInSkipButton()
+    {
+        float duration = 1.5f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            skipButtonGroup.alpha = Mathf.Clamp01(elapsed / duration);
+            yield return null;
+        }
+
+        skipButtonGroup.alpha = 1f;
     }
 
     IEnumerator TypeLine()
@@ -27,20 +58,36 @@ public class TypewriterEffect : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        yield return new WaitForSeconds(2.5f); // pausa entre líneas
+        yield return new WaitForSeconds(2.5f);
         index++;
 
         if (index < lines.Length)
         {
             textComponent.text = "";
-            StartCoroutine(TypeLine());
+            typingCoroutine = StartCoroutine(TypeLine());
         }
         else
         {
             textComponent.text = "";
-            // Iniciar Fade In del menú
+            skipButtonGroup.alpha = 0;
+            skipButton.interactable = false;
+            skipButton.gameObject.SetActive(false);
             StartCoroutine(FadeInMenu());
         }
+    }
+
+    void SkipIntro()
+    {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        textComponent.text = "";
+
+        skipButtonGroup.alpha = 0;
+        skipButton.interactable = false;
+        skipButton.gameObject.SetActive(false);
+
+        StartCoroutine(FadeInMenu());
     }
 
     IEnumerator FadeInMenu()

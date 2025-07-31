@@ -7,18 +7,25 @@ public class DiarioInteractivo : MonoBehaviour
     public GameObject panelUI;
 
     private bool jugadorCerca = false;
+    private bool mensajeMostrado = false;
 
     void Update()
     {
+        if (jugadorCerca && !panelUI.activeSelf && !mensajeMostrado)
+        {
+            MessageUI.Instance.Show("Presiona 'E' para abrir el diario");
+            mensajeMostrado = true;
+        }
+
         if (jugadorCerca && Input.GetKeyDown(KeyCode.E))
         {
-            UnityEngine.Debug.Log("Presionaste E dentro del trigger");
             panelUI.SetActive(true);
             Time.timeScale = 0f;
 
-            //  Mostrar y desbloquear cursor
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+
+            MessageUI.Instance.Hide(); // Ocultar mensaje al abrir diario
         }
 
         if (panelUI.activeSelf && Input.GetKeyDown(KeyCode.Escape))
@@ -29,10 +36,8 @@ public class DiarioInteractivo : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        UnityEngine.Debug.Log("Algo entró: " + other.name);
         if (other.CompareTag("Player"))
         {
-            UnityEngine.Debug.Log("Entró el jugador: " + other.name);
             jugadorCerca = true;
         }
     }
@@ -42,6 +47,8 @@ public class DiarioInteractivo : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             jugadorCerca = false;
+            mensajeMostrado = false;
+            MessageUI.Instance.Hide(); // Ocultar mensaje al alejarse
         }
     }
 
@@ -50,7 +57,6 @@ public class DiarioInteractivo : MonoBehaviour
         panelUI.SetActive(false);
         Time.timeScale = 1f;
 
-        //  Ocultar y bloquear cursor de nuevo (modo juego)
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }

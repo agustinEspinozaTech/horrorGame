@@ -7,10 +7,10 @@ public class KeyPickup : MonoBehaviour
     public Transform player;
     public float pickupDistance = 2.5f;
     public DoorAnimator doorScript;
-
     public float delayToDisappear = 0.5f;
 
     private bool isCollected = false;
+    private bool messageShown = false;
 
     public bool HasBeenCollected()
     {
@@ -23,14 +23,31 @@ public class KeyPickup : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, player.position);
 
-        if (distance < pickupDistance && Input.GetKeyDown(KeyCode.E))
+        if (distance < pickupDistance)
         {
-            isCollected = true;
-            doorScript.hasKey = true;
+            if (!messageShown)
+            {
+                MessageUI.Instance.Show("Presiona 'E' para recoger la llave");
+                messageShown = true;
+            }
 
-            StartCoroutine(OcultarLlaveConDelay());
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                isCollected = true;
+                doorScript.hasKey = true;
 
-            MessageUI.Instance.Show("La encontré… \naunque parte de mí preferiría no haberlo hecho.");
+                StartCoroutine(OcultarLlaveConDelay());
+
+                MessageUI.Instance.Show("La encontré… \naunque parte de mí preferiría no haberlo hecho.");
+            }
+        }
+        else
+        {
+            if (messageShown)
+            {
+                MessageUI.Instance.Hide();
+                messageShown = false;
+            }
         }
     }
 
