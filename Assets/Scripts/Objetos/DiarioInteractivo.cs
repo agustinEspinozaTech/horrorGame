@@ -6,6 +6,9 @@ public class DiarioInteractivo : MonoBehaviour
     [Header("UI del Diario")]
     public GameObject panelUI;
 
+    [Header("Cámara del jugador")]
+    [SerializeField] private MonoBehaviour scriptMovimientoCamara; // Asigná tu script de cámara (ej: MouseLook, FreeLook)
+
     private bool jugadorCerca = false;
     private bool mensajeMostrado = false;
 
@@ -25,7 +28,9 @@ public class DiarioInteractivo : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            MessageUI.Instance.Hide(); // Ocultar mensaje al abrir diario
+            scriptMovimientoCamara.enabled = false; // Desactiva movimiento de cámara
+
+            MessageUI.Instance.Hide();
         }
 
         if (panelUI.activeSelf && Input.GetKeyDown(KeyCode.Escape))
@@ -48,7 +53,7 @@ public class DiarioInteractivo : MonoBehaviour
         {
             jugadorCerca = false;
             mensajeMostrado = false;
-            MessageUI.Instance.Hide(); // Ocultar mensaje al alejarse
+            MessageUI.Instance.Hide();
         }
     }
 
@@ -59,5 +64,7 @@ public class DiarioInteractivo : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        scriptMovimientoCamara.enabled = true; // Reactiva movimiento de cámara
     }
 }

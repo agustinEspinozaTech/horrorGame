@@ -20,7 +20,8 @@ public class TapePlayer : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E) && !hasPlayed)
         {
-            hasPlayed = true;
+            hasPlayed = true; //  Se marca como ya reproducida
+            HistoriaProgreso.cintaReproducida = true;
             StartCoroutine(PlayAndExplode());
         }
     }
@@ -88,5 +89,11 @@ public class TapePlayer : MonoBehaviour
         {
             playerInRange = false;
         }
+    }
+    public bool CintaYaReprodujo()
+    {
+        print("Consultando si la cinta fue reproducida: " + hasPlayed);
+        return hasPlayed;
+
     }
 }
