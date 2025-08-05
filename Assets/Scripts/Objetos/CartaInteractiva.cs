@@ -37,8 +37,11 @@ public class CartaInteractiva : MonoBehaviour
             if (objetoCartaFisica != null)
             {
                 Destroy(objetoCartaFisica);
+
+                // Guardar que la carta fue destruida
+                HistoriaProgreso.cartaDestruida = true;
+                print("Carta destruida y registrada en HistoriaProgreso.");
             }
-  
 
             this.enabled = false;
         }
