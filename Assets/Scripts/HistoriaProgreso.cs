@@ -4,4 +4,6 @@ public static class HistoriaProgreso
 
  
     public static bool cartaDestruida = false;
+
+    public static bool fotografiaDestruida = false;
 }

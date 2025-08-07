@@ -13,19 +13,18 @@ public class OscurecerEscena : MonoBehaviour
 
     void Start()
     {
-        totalEventos = 2; // cinta y carta
+        totalEventos = 3; // cinta y carta
         RenderSettings.ambientIntensity = intensidadInicial;
     }
-
     void Update()
     {
         eventosActivados = 0;
 
         if (HistoriaProgreso.cintaReproducida) eventosActivados++;
         if (HistoriaProgreso.cartaDestruida) eventosActivados++;
+        if (HistoriaProgreso.fotografiaDestruida) eventosActivados++;
 
         float porcentajeOscuridad = (float)eventosActivados / totalEventos;
-
         float nuevaIntensidad = Mathf.Lerp(intensidadInicial, intensidadMinima, porcentajeOscuridad);
         RenderSettings.ambientIntensity = nuevaIntensidad;
     }
