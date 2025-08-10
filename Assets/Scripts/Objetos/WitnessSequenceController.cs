@@ -9,7 +9,7 @@ public class WitnessSequenceController : MonoBehaviour
     [SerializeField] private float firstDelaySeconds = 5f;
 
     [Header("Visibilidad de testigos")]
-    [SerializeField] private float appearDurationSeconds = 40f;
+    [SerializeField] private float appearDurationSeconds = 20f;
     [SerializeField] private bool hideAfterAppearance = true;
     [SerializeField] private List<GameObject> witnessesInScene = new List<GameObject>();
     [SerializeField] private Transform lookAtTarget;
@@ -84,7 +84,12 @@ public class WitnessSequenceController : MonoBehaviour
 
     IEnumerator PlayReactionLines()
     {
+        // Si ya se mostró antes, no volver a mostrarla
+        if (HistoriaProgreso.reaccionTestigosMostrada) yield break;
+
         if (reactionLines == null || reactionLines.Count == 0) yield break;
+
+        HistoriaProgreso.reaccionTestigosMostrada = true; // marcar como mostrada
 
         for (int i = 0; i < reactionLines.Count; i++)
         {

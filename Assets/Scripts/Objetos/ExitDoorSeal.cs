@@ -24,10 +24,21 @@ public class ExitDoorSeal : MonoBehaviour
 
     void Start()
     {
-        // Ocultos al inicio
-        if (ritualObjects != null)
+        // Si la puerta ya fue "abierta" (desactivada), apago este trigger
+        if (HistoriaProgreso.puertaSalidaDesactivada)
+        {
+            var col = GetComponent<Collider>();
+            if (col) col.enabled = false;
+            enabled = false;
+            return;
+        }
+
+        // Solo oculta si el ritual NO estaba activado todavía
+        if (!HistoriaProgreso.ritualActivado && ritualObjects != null)
+        {
             for (int i = 0; i < ritualObjects.Length; i++)
                 if (ritualObjects[i] != null) ritualObjects[i].SetActive(false);
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -69,6 +80,9 @@ public class ExitDoorSeal : MonoBehaviour
 
                 if (MessageUI.Instance != null)
                     MessageUI.Instance.Show($"<color=#FFFFFF>{blockedMessage}</color>", messageDuration);
+
+                // Guardar que el ritual fue activado
+                HistoriaProgreso.ritualActivado = true;
 
                 // Activar los objetos del ritual
                 if (ritualObjects != null)
