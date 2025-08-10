@@ -4,43 +4,66 @@ using TMPro;
 
 public class GameOverManager : MonoBehaviour
 {
-    public GameObject activeEnemy;
-    public GameObject gameOverUI;
-    public Transform player;
-    public TextMeshProUGUI countdownText;
-    public string checkpointTag = "Checkpoint";
+    [Header("Refs")]
+    public GameObject activeEnemy;                          //  público para EnemyAI
+    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private Transform player;
+    [SerializeField] private TextMeshProUGUI countdownText;
 
-    private Vector3 checkpointPosition;
+    [Header("Checkpoint")]
+    [SerializeField] private string checkpointTag = "Checkpoint";
+
+    [Header("Game Over")]
+    [SerializeField] private int countdownSeconds = 5;
+
+    [Header("Debug")]
+    [SerializeField] private bool verboseLogs = false;
+
+    Vector3 checkpointPosition;
+    bool checkpointFound;
+    bool gameOverActive;
+    Coroutine countdownCo;
 
     void Start()
     {
-        if (gameOverUI != null)
-            gameOverUI.SetActive(false);
+        if (gameOverUI) gameOverUI.SetActive(false);
 
-        GameObject checkpoint = GameObject.FindGameObjectWithTag(checkpointTag);
-        if (checkpoint != null)
+        var checkpoint = GameObject.FindGameObjectWithTag(checkpointTag);
+        if (checkpoint)
+        {
             checkpointPosition = checkpoint.transform.position;
+            checkpointFound = true;
+        }
+
+        if (verboseLogs) print("[GameOver] Start. CheckpointFound=" + checkpointFound);
     }
 
     public void ShowGameOver()
     {
+        if (gameOverActive) return;          // idempotente
+        gameOverActive = true;
+
         Time.timeScale = 0f;
-        gameOverUI.SetActive(true);
-        StartCoroutine(CountdownToRetry());
+        if (gameOverUI) gameOverUI.SetActive(true);
+
+        if (countdownCo != null) StopCoroutine(countdownCo);
+        countdownCo = StartCoroutine(CountdownToRetry());
+
+        if (verboseLogs) print("[GameOver] Activado");
     }
 
     IEnumerator CountdownToRetry()
     {
-        int count = 5;
+        int count = Mathf.Max(1, countdownSeconds);
 
         while (count > 0)
         {
-            countdownText.text = $"Reiniciando en {count}...";
+            if (countdownText) countdownText.text = $"Reiniciando en {count}...";
             yield return new WaitForSecondsRealtime(1f);
             count--;
         }
 
-        countdownText.text = ""; // Limpiar el texto
+        if (countdownText) countdownText.text = "";
         Retry();
     }
 
@@ -48,13 +71,14 @@ public class GameOverManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        if (player != null)
-            player.position = checkpointPosition;
+        if (player && checkpointFound) player.position = checkpointPosition;
+        if (activeEnemy) Destroy(activeEnemy);
+        if (gameOverUI) gameOverUI.SetActive(false);
+        if (countdownText) countdownText.text = "";
 
-        if (activeEnemy != null)
-            Destroy(activeEnemy);
+        gameOverActive = false;
+        countdownCo = null;
 
-        gameOverUI.SetActive(false);
-        countdownText.text = ""; //  Limpiar el texto por seguridad
+        if (verboseLogs) print("[GameOver] Retry completado");
     }
 }

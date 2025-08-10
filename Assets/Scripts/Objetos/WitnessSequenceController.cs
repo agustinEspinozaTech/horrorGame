@@ -4,12 +4,27 @@ using UnityEngine;
 
 public class WitnessSequenceController : MonoBehaviour
 {
+    [Header("Disparo")]
     [SerializeField] private bool startWhenThreeFlagsTrue = true;
     [SerializeField] private float firstDelaySeconds = 5f;
+
+    [Header("Visibilidad de testigos")]
     [SerializeField] private float appearDurationSeconds = 40f;
     [SerializeField] private bool hideAfterAppearance = true;
     [SerializeField] private List<GameObject> witnessesInScene = new List<GameObject>();
     [SerializeField] private Transform lookAtTarget;
+
+    [Header("Reacción del protagonista")]
+    [SerializeField, TextArea(2, 6)]
+    private List<string> reactionLines = new List<string>
+    {
+        "No…\n no puede ser. Ya fue suficiente",
+        "Esto se salió de control. No debo quedarme.",
+        "Si me quedo, no salgo vivo de esta casa.",
+        "Me voy ahora mismo. Ya."
+    };
+    [SerializeField] private float lineDuration = 3f;
+    [SerializeField] private float timeBetweenLines = 0.6f; // pequeño respiro entre frases
 
     bool sequenceStarted;
 
@@ -37,7 +52,7 @@ public class WitnessSequenceController : MonoBehaviour
         sequenceStarted = true;
         yield return new WaitForSeconds(firstDelaySeconds);
 
-        // Aparecen todos a la vez
+        // 1) Aparecen todos
         for (int i = 0; i < witnessesInScene.Count; i++)
         {
             var go = witnessesInScene[i];
@@ -55,12 +70,26 @@ public class WitnessSequenceController : MonoBehaviour
             }
         }
 
+        // 2) Reacción del protagonista (en secuencia)
+        StartCoroutine(PlayReactionLines());
+
+        // 3) Ocultar si corresponde
         if (hideAfterAppearance)
         {
             yield return new WaitForSeconds(appearDurationSeconds);
-
             for (int i = 0; i < witnessesInScene.Count; i++)
                 if (witnessesInScene[i] != null) witnessesInScene[i].SetActive(false);
+        }
+    }
+
+    IEnumerator PlayReactionLines()
+    {
+        if (reactionLines == null || reactionLines.Count == 0) yield break;
+
+        for (int i = 0; i < reactionLines.Count; i++)
+        {
+            MessageUI.Instance.Show(reactionLines[i], lineDuration);
+            yield return new WaitForSeconds(lineDuration + timeBetweenLines);
         }
     }
 }

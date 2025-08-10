@@ -42,7 +42,7 @@ public class FotografiaInteractiva : MonoBehaviour
 
         if (fotografiaFueAbierta && !panelFotografia.activeSelf && !mensajeMostrado)
         {
-            MessageUI.Instance.Show("Presiona 'D' para dejar la fotografía");
+            MessageUI.Instance.Show("Presiona 'D' para ocultar la fotografía");
             mensajeMostrado = true;
         }
 
@@ -58,7 +58,7 @@ public class FotografiaInteractiva : MonoBehaviour
             {
                 Destroy(objetoFotografiaFisica);
                 HistoriaProgreso.fotografiaDestruida = true;
-                print("Fotografía destruida y registrada en HistoriaProgreso.");
+                
             }
 
             this.enabled = false;
