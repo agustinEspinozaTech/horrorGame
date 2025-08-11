@@ -42,6 +42,11 @@ public class TypewriterEffectNarrativaFinal : MonoBehaviour
         else
         {
             textComponent.text = string.Empty;
+
+            // >>> ACTIVAR HUD DE HOGUERA ANTES DE VOLVER <<<
+            HistoriaProgreso.hogueraObjetivoActivo = true;
+            HistoriaProgreso.hogueraObjetosRecogidos = 0; // empieza en 0/3
+
             SceneManager.LoadScene(sceneToLoad);
         }
     }

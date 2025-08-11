@@ -12,10 +12,10 @@ public class EnemyProximityTrigger : MonoBehaviour
 
     [Header("Configuración de persecución")]
     [SerializeField] private float detectionRange = 5f;
-    [SerializeField] private float chaseDuration = 10f;
+    [SerializeField] private float chaseDuration = 5f;   // 5s
     [SerializeField] private float gameOverDistance = 1.5f;
+    [SerializeField] private float chaseSpeed = 2.0f;    // más lento
 
-  //  private bool isChasing = false;
     private bool hasTriggered = false;
     private NavMeshAgent agent;
 
@@ -23,11 +23,8 @@ public class EnemyProximityTrigger : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.enabled = false;
-
         animator.SetBool("isRunning", false);
-
-        if (idleAudioSource != null)
-            idleAudioSource.Play();
+        if (idleAudioSource != null) idleAudioSource.Play();
     }
 
     void Update()
@@ -35,7 +32,6 @@ public class EnemyProximityTrigger : MonoBehaviour
         if (hasTriggered) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
-
         if (distance <= detectionRange)
         {
             hasTriggered = true;
@@ -43,15 +39,15 @@ public class EnemyProximityTrigger : MonoBehaviour
         }
     }
 
-    private void StartChase()
+    void StartChase()
     {
-        if (idleAudioSource != null && idleAudioSource.isPlaying)
-            idleAudioSource.Stop();
+        if (idleAudioSource != null && idleAudioSource.isPlaying) idleAudioSource.Stop();
 
         agent.enabled = true;
+        agent.speed = chaseSpeed;                //  velocidad más baja
+        agent.stoppingDistance = gameOverDistance;
 
         animator.SetBool("isRunning", true);
-       // isChasing = true;
 
         StartCoroutine(ChaseRoutine());
     }
@@ -65,10 +61,9 @@ public class EnemyProximityTrigger : MonoBehaviour
             if (player != null && agent.isOnNavMesh)
                 agent.SetDestination(player.position);
 
-            float distance = Vector3.Distance(transform.position, player.position);
-            if (distance <= gameOverDistance)
+            if (Vector3.Distance(transform.position, player.position) <= gameOverDistance)
             {
-                SceneManager.LoadScene("Inicio"); // cambio de escena
+                SceneManager.LoadScene("Inicio");
                 yield break;
             }
 
