@@ -63,6 +63,12 @@ public class EnemyProximityTrigger : MonoBehaviour
 
             if (Vector3.Distance(transform.position, player.position) <= gameOverDistance)
             {
+              
+                Time.timeScale = 1f;                   
+                AudioController.bloqueadoPorAudio = false; 
+                MessageUI.Instance?.Hide();           
+                HistoriaProgreso.ResetAll();          
+
                 SceneManager.LoadScene("Inicio");
                 yield break;
             }

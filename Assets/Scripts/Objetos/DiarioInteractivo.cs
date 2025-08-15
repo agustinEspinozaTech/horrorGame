@@ -16,7 +16,7 @@ public class DiarioInteractivo : MonoBehaviour
     {
         if (jugadorCerca && !panelUI.activeSelf && !mensajeMostrado)
         {
-            MessageUI.Instance.Show("Presiona 'E' para abrir el diario");
+            MessageUI.Instance.Show("Presiona 'E' para abrir");
             mensajeMostrado = true;
         }
 

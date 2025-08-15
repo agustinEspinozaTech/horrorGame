@@ -835,10 +835,8 @@ MonoBehaviour:
   - "Fotograf\xEDas ocultas, diarios, s\xEDmbolos\u2026"
   - "Todo permanece, esperando ser descubierto.\n\nSi alguien encuentra esas pruebas,
     todo terminar\xE1 para vos.\n"
-  - "Tu libertad, tu vida tranquila, tu m\xE1scara.\n\nSi alguien encuentra esas
-    pruebas, todo terminar\xE1 para vos."
-  - "Recorrer cada rinc\xF3n y destruir toda evidencia antes de que alguien m\xE1s
-    entre."
+  - "Tu libertad, tu vida tranquila, tu m\xE1scara."
+  - "Recorre cada rinc\xF3n y destruye toda evidencia antes que alguien m\xE1s entre."
   - "Pero cuidado\u2026\nAlgo tambi\xE9n volvi\xF3 con vos."
   typingSpeed: 0.08
   changeSceneScript: {fileID: 1798143340}

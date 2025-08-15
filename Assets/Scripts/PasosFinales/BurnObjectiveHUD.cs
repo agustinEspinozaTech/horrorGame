@@ -10,26 +10,57 @@ public class BurnObjectiveHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI counterText;
     [SerializeField] private HordeActivator hordeActivator;
 
+    [Header("Fuego")]
+    [SerializeField] private GameObject fireObject; // fuego oculto en escena
+    [SerializeField] private AudioSource fireSfx;   // sonido al encender fuego
+
     [Header("Config")]
     [SerializeField] private int requiredCount = 3;
     [SerializeField] private float startSeconds = 180f;
     [SerializeField] private bool autoStartOnSceneLoad = true;
 
     [Header("Aviso a 7 segundos")]
-    [SerializeField] private AudioSource sfxSevenSeconds;   // asigna un AudioSource con el clip
+    [SerializeField] private AudioSource sfxSevenSeconds;
     [SerializeField] private bool playOneShot = true;
+
+    [Header("Mensaje de quemar")]
+    [SerializeField] private float burnPromptDelay = 2.2f;    // espera tras el último pickup
+    [SerializeField] private float burnPromptDuration = 999f; // queda visible hasta que se quema
 
     float secondsLeft;
     bool running;
-    bool sevenCuePlayed;   //  para no repetir el sonido
+    bool sevenCuePlayed;
+    bool readyToBurn;
 
     void Start()
     {
         if (canvasRoot != null) canvasRoot.SetActive(false);
+        if (fireObject != null) fireObject.SetActive(false);
 
         if (autoStartOnSceneLoad && HistoriaProgreso.hogueraObjetivoActivo)
         {
             StartObjective();
+        }
+    }
+
+    void Update()
+    {
+        if (readyToBurn && Input.GetKeyDown(KeyCode.E))
+        {
+            // Activar fuego
+            if (fireObject != null) fireObject.SetActive(true);
+
+            // Reproducir sonido del fuego
+            if (fireSfx != null)
+            {
+                if (fireSfx.clip != null) fireSfx.PlayOneShot(fireSfx.clip);
+                else fireSfx.Play();
+            }
+
+            // Ocultar mensaje
+            MessageUI.Instance?.Hide();
+
+            readyToBurn = false;
         }
     }
 
@@ -43,6 +74,7 @@ public class BurnObjectiveHUD : MonoBehaviour
         secondsLeft = Mathf.Max(0f, startSeconds);
         running = true;
         sevenCuePlayed = false;
+        readyToBurn = false;
 
         if (canvasRoot != null) canvasRoot.SetActive(true);
 
@@ -60,18 +92,20 @@ public class BurnObjectiveHUD : MonoBehaviour
             if (HistoriaProgreso.hogueraObjetosRecogidos >= requiredCount)
             {
                 running = false;
+                ShowBurnMessage();
                 break;
             }
 
             secondsLeft -= Time.deltaTime;
 
-            // Sonido exactamente cuando queden 7 segundos (una sola vez)
             if (!sevenCuePlayed && secondsLeft <= 7f)
             {
                 if (sfxSevenSeconds != null)
                 {
-                    if (playOneShot && sfxSevenSeconds.clip != null) sfxSevenSeconds.PlayOneShot(sfxSevenSeconds.clip);
-                    else sfxSevenSeconds.Play();
+                    if (playOneShot && sfxSevenSeconds.clip != null)
+                        sfxSevenSeconds.PlayOneShot(sfxSevenSeconds.clip);
+                    else
+                        sfxSevenSeconds.Play();
                 }
                 sevenCuePlayed = true;
             }
@@ -115,7 +149,23 @@ public class BurnObjectiveHUD : MonoBehaviour
         if (HistoriaProgreso.hogueraObjetosRecogidos >= requiredCount)
         {
             running = false;
-            // if (canvasRoot) canvasRoot.SetActive(false);
+            ShowBurnMessage();
         }
+    }
+
+    void ShowBurnMessage()
+    {
+        StopCoroutine(nameof(ShowBurnMessageCo));
+        StartCoroutine(ShowBurnMessageCo());
+    }
+
+    IEnumerator ShowBurnMessageCo()
+    {
+        yield return new WaitForSeconds(burnPromptDelay);
+
+        if (MessageUI.Instance != null)
+            MessageUI.Instance.Show("Presione el botón E para quemar los objetos", burnPromptDuration);
+
+        readyToBurn = true;
     }
 }

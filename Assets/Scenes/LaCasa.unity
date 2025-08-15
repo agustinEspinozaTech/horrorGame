@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 88aef4369cfde49499f8fb69459385ad, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 19d7334bb3269944ea9891da2a4bec21, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -16246,11 +16246,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 542.94
+      value: 562.38
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16258,23 +16258,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 529.97
+      value: 542.12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.74764705
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.66409636
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -16282,7 +16282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -83.226
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7ff3459f114cbaf44a66c0caef7ac9cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -16823,7 +16823,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Game Over
+  m_text: "\xA1Estas muerto!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

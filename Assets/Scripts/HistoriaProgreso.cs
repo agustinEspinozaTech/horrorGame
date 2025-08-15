@@ -30,4 +30,36 @@ public static class HistoriaProgreso
     public static bool hogueraMadera = false;
     public static bool hogueraItemB = false;
     public static bool hogueraItemC = false;
+
+
+    public static void ResetAll()
+    {
+        // Evidencias
+        cintaReproducida = false;
+        cartaDestruida = false;
+        fotografiaDestruida = false;
+        narrativaFinalMostrada = false;
+
+        // Retorno
+        hasReturnPoint = false;
+        returnPos = Vector3.zero;
+        returnEuler = Vector3.zero;
+
+        // Ritual
+        ritualActivado = false;
+        libroRecogido = false;
+        cruzRecogida = false;
+        velaRecogida = false;
+        puertaSalidaDesactivada = false;
+
+        // Enemigo
+        enemigoDebePersistir = false;
+
+        // Hoguera / contador
+        hogueraObjetivoActivo = false;
+        hogueraObjetosRecogidos = 0;
+
+        // Testigos
+        reaccionTestigosMostrada = false;
+    }
 }

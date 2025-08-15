@@ -23,5 +23,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NarrativaFinal.unity
     guid: a5018eefd1417de4d82d072bb2cea12a
+  - enabled: 1
+    path: Assets/Scenes/ConclusionFinal.unity
+    guid: a89845ebdf94d89499f528af4c38f486
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
