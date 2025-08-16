@@ -27,6 +27,13 @@ public class BurnObjectiveHUD : MonoBehaviour
     [SerializeField] private float burnPromptDelay = 2.2f;    // espera tras el último pickup
     [SerializeField] private float burnPromptDuration = 999f; // queda visible hasta que se quema
 
+    // >>> ADDED: ubicación del fuego cerca del jugador
+    [Header("Ubicación del fuego")]
+    [SerializeField] private Transform player;
+    [SerializeField] private Vector3 fireOffset = new Vector3(0f, 0f, 1.2f);
+    [SerializeField] private bool alignToGround = true;
+    [SerializeField] private LayerMask groundMask;
+
     float secondsLeft;
     bool running;
     bool sevenCuePlayed;
@@ -47,19 +54,40 @@ public class BurnObjectiveHUD : MonoBehaviour
     {
         if (readyToBurn && Input.GetKeyDown(KeyCode.E))
         {
-            // Activar fuego
+            // <<< ADDED: posicionar fuego cerca del jugador (y al piso si corresponde)
+            if (fireObject != null && player != null)
+            {
+                Vector3 spawnPos = player.position
+                    + player.forward * fireOffset.z
+                    + player.right * fireOffset.x
+                    + Vector3.up * fireOffset.y;
+
+                if (alignToGround)
+                {
+                    Vector3 rayStart = spawnPos + Vector3.up * 2f;
+                    if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 5f, groundMask))
+                    {
+                        spawnPos = hit.point;
+                    }
+                }
+
+                fireObject.transform.position = spawnPos;
+
+                Vector3 fwd = player.forward; fwd.y = 0f;
+                if (fwd.sqrMagnitude > 0.0001f)
+                    fireObject.transform.rotation = Quaternion.LookRotation(fwd);
+            }
+
+            // Activar fuego (tu lógica)
             if (fireObject != null) fireObject.SetActive(true);
 
-            // Reproducir sonido del fuego
             if (fireSfx != null)
             {
                 if (fireSfx.clip != null) fireSfx.PlayOneShot(fireSfx.clip);
                 else fireSfx.Play();
             }
 
-            // Ocultar mensaje
             MessageUI.Instance?.Hide();
-
             readyToBurn = false;
         }
     }

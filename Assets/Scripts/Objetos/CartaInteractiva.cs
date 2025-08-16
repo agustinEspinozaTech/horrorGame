@@ -25,12 +25,12 @@ public class CartaInteractiva : MonoBehaviour
         // Si la carta fue abierta y ya se cerró, y aún no se mostró el mensaje
         if (cartaFueAbierta && !panelCarta.activeSelf && !mensajeMostrado)
         {
-            MessageUI.Instance.Show("Presiona 'D' para ocultar la carta");
+            MessageUI.Instance.Show("Presiona 'Q' para ocultar la carta");
             mensajeMostrado = true;
         }
 
         // Si ya mostramos el mensaje y el jugador presiona D
-        if (mensajeMostrado && Input.GetKeyDown(KeyCode.D))
+        if (mensajeMostrado && Input.GetKeyDown(KeyCode.Q))
         {
             MessageUI.Instance.Hide();
 

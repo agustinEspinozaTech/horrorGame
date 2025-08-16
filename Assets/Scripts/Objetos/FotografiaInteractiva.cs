@@ -42,11 +42,11 @@ public class FotografiaInteractiva : MonoBehaviour
 
         if (fotografiaFueAbierta && !panelFotografia.activeSelf && !mensajeMostrado)
         {
-            MessageUI.Instance.Show("Presiona 'D' para ocultar la fotografía");
+            MessageUI.Instance.Show("Presiona 'Q' para ocultar la fotografía");
             mensajeMostrado = true;
         }
 
-        if (mensajeMostrado && Input.GetKeyDown(KeyCode.D))
+        if (!panelFotografia.activeSelf && mensajeMostrado && Input.GetKeyDown(KeyCode.Q))
         {
             MessageUI.Instance.Hide();
             Time.timeScale = 1f;

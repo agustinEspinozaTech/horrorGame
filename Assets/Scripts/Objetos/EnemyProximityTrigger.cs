@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using TMPro; // <<< ADDED (si usas TMP)
 
 public class EnemyProximityTrigger : MonoBehaviour
 {
@@ -16,7 +17,14 @@ public class EnemyProximityTrigger : MonoBehaviour
     [SerializeField] private float gameOverDistance = 1.5f;
     [SerializeField] private float chaseSpeed = 2.0f;    // más lento
 
+    // <<< ADDED: UI Game Over
+    [Header("Game Over UI")]
+    [SerializeField] private GameObject canvasGameOver;           // Canvas a mostrar
+    [SerializeField] private TextMeshProUGUI countdownText;       // Texto del contador (TMP)
+    [SerializeField] private float countdownSeconds = 3f;         // Segundos de cuenta regresiva
+
     private bool hasTriggered = false;
+    private bool gameOverStarted = false; // <<< ADDED: evita dobles disparos
     private NavMeshAgent agent;
 
     void Start()
@@ -25,6 +33,9 @@ public class EnemyProximityTrigger : MonoBehaviour
         agent.enabled = false;
         animator.SetBool("isRunning", false);
         if (idleAudioSource != null) idleAudioSource.Play();
+
+        // <<< ADDED: aseguramos que el canvas esté oculto de inicio
+        if (canvasGameOver != null) canvasGameOver.SetActive(false);
     }
 
     void Update()
@@ -63,13 +74,17 @@ public class EnemyProximityTrigger : MonoBehaviour
 
             if (Vector3.Distance(transform.position, player.position) <= gameOverDistance)
             {
-              
-                Time.timeScale = 1f;                   
-                AudioController.bloqueadoPorAudio = false; 
-                MessageUI.Instance?.Hide();           
-                HistoriaProgreso.ResetAll();          
+                // <<<< REEMPLAZO MINIMO: en vez de cargar escena al toque,
+                // mostramos canvas + cuenta regresiva y AL FINAL hacemos lo mismo que ya hacías
+                if (!gameOverStarted)
+                {
+                    gameOverStarted = true;
+                    // opcional: frenar enemigo durante la cuenta (no altera tu lógica de reset/escena)
+                    if (agent != null) agent.isStopped = true;
+                    animator.SetBool("isRunning", false);
 
-                SceneManager.LoadScene("Inicio");
+                    yield return StartCoroutine(ShowGameOverAndRestart()); // <<< ADDED
+                }
                 yield break;
             }
 
@@ -78,5 +93,33 @@ public class EnemyProximityTrigger : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    // <<< ADDED: muestra el canvas, cuenta y luego ejecuta tu mismo bloque original
+    IEnumerator ShowGameOverAndRestart()
+    {
+        if (canvasGameOver != null) canvasGameOver.SetActive(true);
+
+        float timeLeft = Mathf.Max(1f, countdownSeconds);
+        // Usamos tiempo real por si en algún momento estás manipulando timeScale en otro lado
+        float endTime = Time.realtimeSinceStartup + timeLeft;
+
+        while (Time.realtimeSinceStartup < endTime)
+        {
+            float rest = Mathf.Ceil(endTime - Time.realtimeSinceStartup);
+            if (countdownText != null)
+            {
+                countdownText.text = rest.ToString("0"); // 3, 2, 1...
+            }
+            yield return null;
+        }
+
+        // --- AQUÍ EJECUTAMOS EXACTAMENTE TU LÓGICA ACTUAL ---
+        Time.timeScale = 1f;
+        AudioController.bloqueadoPorAudio = false;
+        MessageUI.Instance?.Hide();
+        HistoriaProgreso.ResetAll();
+
+        SceneManager.LoadScene("Inicio");
     }
 }
