@@ -120,6 +120,6 @@ public class EnemyProximityTrigger : MonoBehaviour
         MessageUI.Instance?.Hide();
         HistoriaProgreso.ResetAll();
 
-        SceneManager.LoadScene("Inicio");
+        SceneManager.LoadScene("DestruirEvidencia");
     }
 }

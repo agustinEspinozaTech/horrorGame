@@ -8,48 +8,72 @@ using TMPro;
 public class TypewriterEffectNarrativa : MonoBehaviour
 {
     [Header("Texto y configuración")]
-    public TextMeshProUGUI textComponent;
+    [SerializeField] private TextMeshProUGUI textComponent;
     [TextArea(3, 10)]
-    public string[] lines;
-    public float typingSpeed = 0.08f;
+    [SerializeField] private string[] lines;
+    [SerializeField] private float typingSpeed = 0.08f;
 
     [Header("Cambio de escena")]
-    public ChangeSceneAfterTypewriter changeSceneScript;
+    [SerializeField] private ChangeSceneAfterTypewriter changeSceneScript;
 
     private int index = 0;
+    private bool isTyping;
+    private Coroutine typingCoroutine;
 
     void Start()
     {
         textComponent.text = "";
-        StartCoroutine(TypeLine());
+        typingCoroutine = StartCoroutine(TypeLine());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isTyping)
+            {
+                // Si está escribiendo => mostrar línea completa de golpe
+                StopCoroutine(typingCoroutine);
+                textComponent.text = lines[index];
+                isTyping = false;
+            }
+            else
+            {
+                // Si ya terminó => avanzar de inmediato
+                NextLine();
+            }
+        }
     }
 
     IEnumerator TypeLine()
     {
+        isTyping = true;
         foreach (char c in lines[index].ToCharArray())
         {
             textComponent.text += c;
             yield return new WaitForSeconds(typingSpeed);
         }
+        isTyping = false;
 
         yield return new WaitForSeconds(2.5f);
-        index++;
+        NextLine();
+    }
 
+    void NextLine()
+    {
+        index++;
         if (index < lines.Length)
         {
             textComponent.text = "";
-            StartCoroutine(TypeLine());
+            typingCoroutine = StartCoroutine(TypeLine());
         }
         else
         {
             textComponent.text = "";
-
-            // Llamamos al script que cambia de escena
             if (changeSceneScript != null)
             {
                 changeSceneScript.CargarSiguienteEscena();
             }
-          
         }
     }
 }

@@ -5330,6 +5330,9 @@ MonoBehaviour:
   animator: {fileID: 490429292}
   gameOverDistance: 1.5
   chaseSpeed: 3.5
+  canvasGameOver: {fileID: 285105189}
+  countdownText: {fileID: 990386020}
+  countdownSeconds: 3
 --- !u!114 &490429289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8455,6 +8458,9 @@ MonoBehaviour:
   animator: {fileID: 799027188}
   gameOverDistance: 1.5
   chaseSpeed: 3.5
+  canvasGameOver: {fileID: 285105189}
+  countdownText: {fileID: 990386020}
+  countdownSeconds: 3
 --- !u!114 &799027185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18980,6 +18986,9 @@ MonoBehaviour:
   animator: {fileID: 1298258208}
   gameOverDistance: 1.5
   chaseSpeed: 3.5
+  canvasGameOver: {fileID: 285105189}
+  countdownText: {fileID: 990386020}
+  countdownSeconds: 3
 --- !u!114 &1298258205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27021,6 +27030,9 @@ MonoBehaviour:
   animator: {fileID: 1973627599}
   gameOverDistance: 1.5
   chaseSpeed: 3.5
+  canvasGameOver: {fileID: 285105189}
+  countdownText: {fileID: 990386020}
+  countdownSeconds: 3
 --- !u!114 &1973627596
 MonoBehaviour:
   m_ObjectHideFlags: 0

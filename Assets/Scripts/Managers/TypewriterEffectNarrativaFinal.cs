@@ -14,39 +14,79 @@ public class TypewriterEffectNarrativaFinal : MonoBehaviour
     [Header("Escena a cargar al finalizar")]
     [SerializeField] private string sceneToLoad = "DestruirEvidencia";
 
-    int index;
+    private int index;
+    private bool isTyping;
+    private bool isWaitingDelay;
+    private Coroutine typingCoroutine;
+    private Coroutine delayCoroutine;
 
     void Start()
     {
         if (!textComponent) return;
         textComponent.text = string.Empty;
-        StartCoroutine(TypeLine());
+        typingCoroutine = StartCoroutine(TypeLine());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isTyping)
+            {
+                if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+                textComponent.text = lines[index];
+                isTyping = false;
+                delayCoroutine = StartCoroutine(PostLineDelay());
+            }
+            else if (isWaitingDelay)
+            {
+                if (delayCoroutine != null) StopCoroutine(delayCoroutine);
+                isWaitingDelay = false;
+                NextLine();
+            }
+        
+        }
     }
 
     IEnumerator TypeLine()
     {
+        isTyping = true;
+        textComponent.text = string.Empty;
+
         foreach (char c in lines[index])
         {
             textComponent.text += c;
             yield return new WaitForSeconds(typingSpeed);
         }
 
+        isTyping = false;
+        delayCoroutine = StartCoroutine(PostLineDelay());
+    }
+
+    IEnumerator PostLineDelay()
+    {
+        isWaitingDelay = true;
         yield return new WaitForSeconds(betweenLinesDelay);
+        isWaitingDelay = false;
+        NextLine();
+    }
+
+    void NextLine()
+    {
         index++;
 
         if (index < lines.Length)
         {
-            textComponent.text = string.Empty;
-            StartCoroutine(TypeLine());
+            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+            if (delayCoroutine != null) StopCoroutine(delayCoroutine);
+
+            typingCoroutine = StartCoroutine(TypeLine());
         }
         else
         {
             textComponent.text = string.Empty;
-
-            // >>> ACTIVAR HUD DE HOGUERA ANTES DE VOLVER <<<
             HistoriaProgreso.hogueraObjetivoActivo = true;
-            HistoriaProgreso.hogueraObjetosRecogidos = 0; // empieza en 0/3
-
+            HistoriaProgreso.hogueraObjetosRecogidos = 0;
             SceneManager.LoadScene(sceneToLoad);
         }
     }
